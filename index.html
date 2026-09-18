@@ -1141,40 +1141,63 @@
     </div>
 
     <!-- الفوتر المحدث مع الأيقونات والخريطة -->
-    <footer>
-      <!-- <div class="footer-brand">بروستد أمين | للإستفسار والطلب: 0510014106</div> -->
+<footer>
+  <!-- <div class="footer-brand">بروستد أمين | للإستفسار والطلب: 0510014106</div> -->
 
-      <div class="footer-socials">
-        <a
-          href="https://www.snapchat.com/@bro_ameen"
-          target="_blank"
-          title="سناب شات"
-          ><i class="fa-brands fa-snapchat"></i
-        ></a>
-        <a
-          href="https://www.instagram.com/bro_ameen1"
-          target="_blank"
-          title="انستغرام"
-          ><i class="fa-brands fa-instagram"></i
-        ></a>
-        <a
-          href="https://www.tiktok.com/@bro_ameen"
-          target="_blank"
-          title="تيك توك"
-          ><i class="fa-brands fa-tiktok"></i
-        ></a>
-      </div>
+  <div class="footer-socials">
+    <!-- سناب شات -->
+    <a 
+      href="https://www.snapchat.com/add/bro_ameen" 
+      onclick="openApp(event, 'snapchat://add/bro_ameen', 'https://www.snapchat.com/add/bro_ameen')" 
+      title="سناب شات"
+    >
+      <i class="fa-brands fa-snapchat"></i>
+    </a>
 
-      <div class="footer-map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.428546053802!2d50.211179173643174!3d26.28020398698938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49e9d1a2cd372f%3A0xa5594814bd2e115c!2zQU1FRU4gQlJPQVNURUQg2KjYsdmI2LPYqtivINij2YXZitmG!5e0!3m2!1sen!2ssa!4v1789518262587!5m2!1sen!2ssa"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
-      </div>
-    </footer>
+    <!-- انستغرام -->
+    <a 
+      href="https://www.instagram.com/bro_ameen1" 
+      onclick="openApp(event, 'instagram://user?username=bro_ameen1', 'https://www.instagram.com/bro_ameen1')" 
+      title="انستغرام"
+    >
+      <i class="fa-brands fa-instagram"></i>
+    </a>
 
+    <!-- تيك توك -->
+    <a 
+      href="https://www.tiktok.com/@bro_ameen" 
+      onclick="openApp(event, 'snssdk1233://user/profile/bro_ameen', 'https://www.tiktok.com/@bro_ameen')" 
+      title="تيك توك"
+    >
+      <i class="fa-brands fa-tiktok"></i>
+    </a>
+  </div>
+
+  <div class="footer-map">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.428546053802!2d50.211179173643174!3d26.28020398698938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49e9d1a2cd372f%3A0xa5594814bd2e115c!2zQU1FRU4gQlJPQVNURUQg2KjYsdmI2LPYqtivINij2YXZitmG!5e0!3m2!1sen!2ssa!4v1789518262587!5m2!1sen!2ssa"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+  </div>
+</footer>
+
+<!-- دالة الجافاسكريبت المسؤولة عن فتح التطبيق مباشرة -->
+<script>
+function openApp(event, appUrl, webUrl) {
+    // منع السلوك الافتراضي للانتقال الفوري للرابط العادي
+    event.preventDefault();
+    
+    // محاولة فتح التطبيق مباشرة على الهاتف
+    window.location.href = appUrl;
+
+    // إذا لم يفتح التطبيق (لأنه غير مثبت أو المتصفح منع ذلك) يتم تحويله للرابط الاحتياطي بعد نصف ثانية
+    setTimeout(function () {
+        window.location.href = webUrl;
+    }, 500);
+}
+</script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import {
