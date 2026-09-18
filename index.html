@@ -741,6 +741,88 @@
         background-color: var(--danger);
       }
 
+      /* أدوات ترتيب المنتجات داخل لوحة الإدارة */
+      .admin-order-badge {
+        min-width: 34px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary);
+        color: white;
+        border-radius: 7px;
+        font-weight: 800;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+      }
+
+      .admin-order-controls {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+
+      .admin-order-controls button {
+        width: 30px;
+        height: 28px;
+        border: 1px solid #fcd34d;
+        background: white;
+        color: var(--primary);
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .admin-order-controls button:hover {
+        background: #fffbeb;
+      }
+
+      .admin-order-controls button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .save-order-btn {
+        background-color: var(--accent);
+        color: #450a0a;
+        border: none;
+        padding: 7px 10px;
+        border-radius: 7px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .save-order-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .admin-order-help {
+        font-size: 0.72rem;
+        color: var(--text-light);
+        margin: 4px 0 8px;
+      }
+
+      .admin-item.dragging {
+        opacity: 0.45;
+      }
+
+      .admin-item.drag-over {
+        border-top: 3px solid var(--accent);
+      }
+
+      .admin-drag-handle {
+        cursor: grab;
+        color: var(--text-light);
+        padding: 3px;
+        flex-shrink: 0;
+      }
+
+      .admin-drag-handle:active {
+        cursor: grabbing;
+      }
+
       .logout-btn {
         background-color: var(--danger);
         color: white;
@@ -1131,9 +1213,20 @@
               "
               >الوجبات المسجلة</span
             >
+            <button
+              type="button"
+              id="save-order-btn"
+              class="save-order-btn"
+              onclick="saveProductsOrder()"
+            >
+              <i class="fa-solid fa-floppy-disk"></i> حفظ الترتيب
+            </button>
             <button type="button" onclick="logoutAdmin()" class="logout-btn">
               <i class="fa-solid fa-right-from-bracket"></i> خروج
             </button>
+          </div>
+          <div class="admin-order-help">
+            اسحب المنتج لأعلى أو لأسفل، أو استخدم الأسهم، ثم اضغط «حفظ الترتيب».
           </div>
           <div id="admin-list-container"></div>
         </div>
@@ -1141,63 +1234,82 @@
     </div>
 
     <!-- الفوتر المحدث مع الأيقونات والخريطة -->
-<footer>
-  <!-- <div class="footer-brand">بروستد أمين | للإستفسار والطلب: 0510014106</div> -->
+    <footer>
+      <!-- <div class="footer-brand">بروستد أمين | للإستفسار والطلب: 0510014106</div> -->
 
-  <div class="footer-socials">
-    <!-- سناب شات -->
-    <a 
-      href="https://www.snapchat.com/add/bro_ameen" 
-      onclick="openApp(event, 'snapchat://add/bro_ameen', 'https://www.snapchat.com/add/bro_ameen')" 
-      title="سناب شات"
-    >
-      <i class="fa-brands fa-snapchat"></i>
-    </a>
+      <div class="footer-socials">
+        <!-- سناب شات -->
+        <a
+          href="https://www.snapchat.com/add/bro_ameen"
+          onclick="
+            openApp(
+              event,
+              'snapchat://add/bro_ameen',
+              'https://www.snapchat.com/add/bro_ameen'
+            )
+          "
+          title="سناب شات"
+        >
+          <i class="fa-brands fa-snapchat"></i>
+        </a>
 
-    <!-- انستغرام -->
-    <a 
-      href="https://www.instagram.com/bro_ameen1" 
-      onclick="openApp(event, 'instagram://user?username=bro_ameen1', 'https://www.instagram.com/bro_ameen1')" 
-      title="انستغرام"
-    >
-      <i class="fa-brands fa-instagram"></i>
-    </a>
+        <!-- انستغرام -->
+        <a
+          href="https://www.instagram.com/bro_ameen1"
+          onclick="
+            openApp(
+              event,
+              'instagram://user?username=bro_ameen1',
+              'https://www.instagram.com/bro_ameen1'
+            )
+          "
+          title="انستغرام"
+        >
+          <i class="fa-brands fa-instagram"></i>
+        </a>
 
-    <!-- تيك توك -->
-    <a 
-      href="https://www.tiktok.com/@bro_ameen" 
-      onclick="openApp(event, 'snssdk1233://user/profile/bro_ameen', 'https://www.tiktok.com/@bro_ameen')" 
-      title="تيك توك"
-    >
-      <i class="fa-brands fa-tiktok"></i>
-    </a>
-  </div>
+        <!-- تيك توك -->
+        <a
+          href="https://www.tiktok.com/@bro_ameen"
+          onclick="
+            openApp(
+              event,
+              'snssdk1233://user/profile/bro_ameen',
+              'https://www.tiktok.com/@bro_ameen'
+            )
+          "
+          title="تيك توك"
+        >
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
 
-  <div class="footer-map">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.428546053802!2d50.211179173643174!3d26.28020398698938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49e9d1a2cd372f%3A0xa5594814bd2e115c!2zQU1FRU4gQlJPQVNURUQg2KjYsdmI2LPYqtivINij2YXZitmG!5e0!3m2!1sen!2ssa!4v1789518262587!5m2!1sen!2ssa"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-  </div>
-</footer>
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.428546053802!2d50.211179173643174!3d26.28020398698938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49e9d1a2cd372f%3A0xa5594814bd2e115c!2zQU1FRU4gQlJPQVNURUQg2KjYsdmI2LPYqtivINij2YXZitmG!5e0!3m2!1sen!2ssa!4v1789518262587!5m2!1sen!2ssa"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </footer>
 
-<!-- دالة الجافاسكريبت المسؤولة عن فتح التطبيق مباشرة -->
-<script>
-function openApp(event, appUrl, webUrl) {
-    // منع السلوك الافتراضي للانتقال الفوري للرابط العادي
-    event.preventDefault();
-    
-    // محاولة فتح التطبيق مباشرة على الهاتف
-    window.location.href = appUrl;
+    <!-- دالة الجافاسكريبت المسؤولة عن فتح التطبيق مباشرة -->
+    <script>
+      function openApp(event, appUrl, webUrl) {
+        // منع السلوك الافتراضي للانتقال الفوري للرابط العادي
+        event.preventDefault();
 
-    // إذا لم يفتح التطبيق (لأنه غير مثبت أو المتصفح منع ذلك) يتم تحويله للرابط الاحتياطي بعد نصف ثانية
-    setTimeout(function () {
-        window.location.href = webUrl;
-    }, 500);
-}
-</script>
+        // محاولة فتح التطبيق مباشرة على الهاتف
+        window.location.href = appUrl;
+
+        // إذا لم يفتح التطبيق (لأنه غير مثبت أو المتصفح منع ذلك) يتم تحويله للرابط الاحتياطي بعد نصف ثانية
+        setTimeout(function () {
+          window.location.href = webUrl;
+        }, 500);
+      }
+    </script>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import {
@@ -1235,6 +1347,10 @@ function openApp(event, appUrl, webUrl) {
       let workingImagesArray = [];
       let activeSelectedProduct = null;
       let currentActiveCategory = "all";
+
+      // متغيرات التحكم بترتيب المنتجات
+      let adminOrderDirty = false;
+      let draggedAdminItemId = null;
 
       // اللغة الحالية: ar = عربي / en = English
       let currentLanguage = localStorage.getItem("menuLanguage") || "ar";
@@ -1461,6 +1577,171 @@ function openApp(event, appUrl, webUrl) {
         }
       }
 
+      // ترتيب المنتجات:
+      // sortOrder هو الترتيب الذي يحدده المشرف، والمنتجات القديمة تستخدم createdAt كاحتياط.
+      function getProductSortValue(product, fallbackIndex = 0) {
+        const value = Number(product.sortOrder);
+        if (Number.isFinite(value)) return value;
+
+        const created = Number(product.createdAt);
+        if (Number.isFinite(created)) return created;
+
+        return 1000000000 + fallbackIndex;
+      }
+
+      function sortProducts(products) {
+        return [...products].sort((a, b) => {
+          const orderA = getProductSortValue(a, globalProducts.indexOf(a));
+          const orderB = getProductSortValue(b, globalProducts.indexOf(b));
+          if (orderA !== orderB) return orderA - orderB;
+          return globalProducts.indexOf(a) - globalProducts.indexOf(b);
+        });
+      }
+
+      function normalizeProductOrder(products) {
+        return sortProducts(products).map((product, index) => ({
+          ...product,
+          sortOrder: index + 1
+        }));
+      }
+
+      function markAdminOrderDirty(dirty = true) {
+        adminOrderDirty = dirty;
+        const btn = document.getElementById("save-order-btn");
+        if (!btn) return;
+        btn.disabled = !dirty;
+        btn.innerHTML = dirty
+          ? '<i class="fa-solid fa-floppy-disk"></i> حفظ الترتيب *'
+          : '<i class="fa-solid fa-floppy-disk"></i> حفظ الترتيب';
+      }
+
+      window.moveProduct = function (id, direction) {
+        const ordered = normalizeProductOrder(globalProducts);
+        const index = ordered.findIndex((p) => p.id === id);
+        if (index === -1) return;
+
+        const targetIndex = index + direction;
+        if (targetIndex < 0 || targetIndex >= ordered.length) return;
+
+        [ordered[index], ordered[targetIndex]] = [
+          ordered[targetIndex],
+          ordered[index]
+        ];
+
+        globalProducts = ordered.map((product, idx) => ({
+          ...product,
+          sortOrder: idx + 1
+        }));
+
+        filterCategory(currentActiveCategory, null, false);
+        renderAdminList(globalProducts);
+        markAdminOrderDirty(true);
+      };
+
+      window.saveProductsOrder = async function () {
+        if (!adminOrderDirty) return;
+
+        const btn = document.getElementById("save-order-btn");
+
+        try {
+          if (btn) {
+            btn.disabled = true;
+            btn.innerHTML =
+              '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
+          }
+
+          const ordered = normalizeProductOrder(globalProducts);
+
+          await Promise.all(
+            ordered.map((product) =>
+              updateDoc(doc(db, "products", product.id), {
+                sortOrder: product.sortOrder
+              })
+            )
+          );
+
+          globalProducts = ordered;
+          saveProductsCache(globalProducts);
+          markAdminOrderDirty(false);
+          showToast("تم حفظ ترتيب المنتجات بنجاح!");
+        } catch (err) {
+          console.error("Save products order error:", err);
+          markAdminOrderDirty(true);
+          showToast("تعذر حفظ ترتيب المنتجات: " + (err?.message || err), true);
+        }
+      };
+
+      function setupAdminDragAndDrop(item) {
+        item.draggable = true;
+
+        item.addEventListener("dragstart", (e) => {
+          draggedAdminItemId = item.dataset.productId;
+          item.classList.add("dragging");
+          if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", draggedAdminItemId);
+          }
+        });
+
+        item.addEventListener("dragend", () => {
+          draggedAdminItemId = null;
+          item.classList.remove("dragging");
+          document
+            .querySelectorAll("#admin-list-container .admin-item")
+            .forEach((el) => el.classList.remove("drag-over"));
+        });
+
+        item.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          if (
+            !draggedAdminItemId ||
+            draggedAdminItemId === item.dataset.productId
+          )
+            return;
+
+          const rect = item.getBoundingClientRect();
+          const before = e.clientY < rect.top + rect.height / 2;
+          const container = document.getElementById("admin-list-container");
+          const dragged = document.querySelector(
+            `#admin-list-container .admin-item[data-product-id="${draggedAdminItemId}"]`
+          );
+
+          if (!dragged || dragged === item) return;
+
+          item.classList.add("drag-over");
+
+          if (before) container.insertBefore(dragged, item);
+          else container.insertBefore(dragged, item.nextSibling);
+        });
+
+        item.addEventListener("dragleave", () => {
+          item.classList.remove("drag-over");
+        });
+
+        item.addEventListener("drop", (e) => {
+          e.preventDefault();
+          item.classList.remove("drag-over");
+
+          const ids = [
+            ...document.querySelectorAll("#admin-list-container .admin-item")
+          ].map((el) => el.dataset.productId);
+
+          const productMap = new Map(globalProducts.map((p) => [p.id, p]));
+
+          globalProducts = ids
+            .map((id) => productMap.get(id))
+            .filter(Boolean)
+            .map((product, index) => ({
+              ...product,
+              sortOrder: index + 1
+            }));
+
+          filterCategory(currentActiveCategory, null, false);
+          renderAdminList(globalProducts);
+          markAdminOrderDirty(true);
+        });
+      }
+
       window.filterCategory = function (category, element, updateStyle = true) {
         currentActiveCategory = category;
         if (updateStyle && element) {
@@ -1478,6 +1759,9 @@ function openApp(event, appUrl, webUrl) {
       };
 
       function renderProducts(products) {
+        // عرض المنتجات دائماً حسب الترتيب الذي حدده المشرف.
+        products = sortProducts(products);
+
         const gridContainer = document.getElementById("products-grid");
         gridContainer.innerHTML = "";
         if (products.length === 0) {
@@ -1820,8 +2104,18 @@ function openApp(event, appUrl, webUrl) {
             await updateDoc(doc(db, "products", editingId), productData);
             showToast(t("saveSuccess"));
           } else {
-            // إضافة منتج جديد
+            // إضافة منتج جديد في نهاية القائمة.
+            const existingOrders = globalProducts
+              .map((p) => Number(p.sortOrder))
+              .filter((v) => Number.isFinite(v));
+
+            const maxOrder = existingOrders.length
+              ? Math.max(...existingOrders)
+              : globalProducts.length;
+
             productData.createdAt = Date.now();
+            productData.sortOrder = maxOrder + 1;
+
             await addDoc(collection(db, "products"), productData);
             showToast(t("addSuccess"));
           }
@@ -1878,18 +2172,52 @@ function openApp(event, appUrl, webUrl) {
 
       function renderAdminList(products) {
         const container = document.getElementById("admin-list-container");
+        if (!container) return;
+
         container.innerHTML = "";
-        products.forEach((product) => {
+        const orderedProducts = normalizeProductOrder(products);
+
+        orderedProducts.forEach((product, index) => {
           const item = document.createElement("div");
           item.className = "admin-item";
+          item.dataset.productId = product.id;
+
+          const isFirst = index === 0;
+          const isLast = index === orderedProducts.length - 1;
+
           item.innerHTML = `
-            <div class="admin-item-info"><b>${getProductName(product)}</b> (${product.price} ${t("currencyShort")})</div>
+            <span class="admin-drag-handle" title="اسحب لترتيب المنتج">
+              <i class="fa-solid fa-grip-vertical"></i>
+            </span>
+            <span class="admin-order-badge">${index + 1}</span>
+
+            <div class="admin-item-info">
+              <b>${getProductName(product)}</b> (${product.price} ${t("currencyShort")})
+            </div>
+
+            <div class="admin-order-controls">
+              <button type="button" title="نقل للأعلى"
+                ${isFirst ? "disabled" : ""}
+                onclick="moveProduct('${product.id}', -1)">
+                <i class="fa-solid fa-chevron-up"></i>
+              </button>
+              <button type="button" title="نقل للأسفل"
+                ${isLast ? "disabled" : ""}
+                onclick="moveProduct('${product.id}', 1)">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+
             <div class="admin-actions">
-              <button class="edit-btn" onclick="prepareEditProduct('${product.id}')">تعديل</button>
-              <button class="delete-btn" onclick="deleteProduct('${product.id}')">حذف</button>
+              <button class="edit-btn" type="button"
+                onclick="prepareEditProduct('${product.id}')">تعديل</button>
+              <button class="delete-btn" type="button"
+                onclick="deleteProduct('${product.id}')">حذف</button>
             </div>
           `;
+
           container.appendChild(item);
+          setupAdminDragAndDrop(item);
         });
       }
 
@@ -1938,6 +2266,7 @@ function openApp(event, appUrl, webUrl) {
 
       document.addEventListener("DOMContentLoaded", () => {
         applyLanguage();
+        markAdminOrderDirty(false);
         // عرض الكاش فوراً حتى لا تبقى الصفحة فارغة أثناء اتصال Firebase
         loadProductsCache();
         // تحديث البيانات الحقيقية في الخلفية
