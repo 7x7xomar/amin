@@ -71,7 +71,8 @@
       .admin-trigger {
         position: absolute;
         top: 12px;
-        left: 12px;
+        left: 12px !important;
+        right: auto !important;
         background: rgba(255, 255, 255, 0.15);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -82,6 +83,47 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      /* زر واتساب عائم - ثابت أسفل يسار الشاشة في جميع اللغات */
+      .floating-whatsapp {
+        position: fixed;
+        left: 18px;
+        bottom: 18px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--whatsapp);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        z-index: 999;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .floating-whatsapp:hover {
+        transform: scale(1.08);
+        box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .floating-whatsapp:active {
+        transform: scale(0.95);
+      }
+
+      @media (max-width: 500px) {
+        .floating-whatsapp {
+          left: 14px;
+          bottom: 14px;
+          width: 52px;
+          height: 52px;
+          font-size: 28px;
+        }
       }
 
       .container {
@@ -95,6 +137,61 @@
           max-width: 750px;
           padding: 0 16px;
         }
+      }
+
+      /* زر تغيير اللغة */
+      .language-switcher {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 7px 11px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 5;
+      }
+
+      .language-switcher:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .bilingual-input {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .bilingual-input input,
+      .bilingual-input textarea {
+        width: 100%;
+      }
+
+      @media (max-width: 500px) {
+        .bilingual-input {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      html[dir="ltr"] .close-modal {
+        left: auto;
+        right: 10px;
+      }
+
+      html[dir="ltr"] .modal-prev {
+        right: auto;
+        left: 10px;
+      }
+
+      html[dir="ltr"] .modal-next {
+        left: auto;
+        right: 10px;
       }
 
       .categories-bar {
@@ -778,30 +875,71 @@
     </div>
 
     <header>
-      <button class="admin-trigger" onclick="openLoginModal()">
+      <button class="admin-trigger" onclick="openLoginModal()" title="الإدارة">
         <i class="fa-solid fa-gear"></i>
       </button>
+
+      <button
+        class="language-switcher"
+        id="language-switcher"
+        onclick="toggleLanguage()"
+      >
+        <i class="fa-solid fa-language"></i>
+        <span id="language-label">English</span>
+      </button>
       <div class="container">
-        <h1>بروستد أمين</h1>
-        <p>أهلاً بكم - الطعم الذهبي المقرمش 🍗</p>
+        <h1 id="brand-title">بروستد أمين</h1>
+        <p id="brand-subtitle">أهلاً بكم - الطعم الذهبي المقرمش 🍗</p>
       </div>
     </header>
 
+    <!-- زر واتساب عائم - لا يتأثر بتغيير اللغة -->
+    <a
+      class="floating-whatsapp"
+      href="https://wa.me/966510014106"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="WhatsApp"
+      title="WhatsApp"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
     <main class="container">
       <div id="categories-bar" class="categories-bar">
-        <div class="cat-chip active" onclick="filterCategory('all', this)">
+        <div
+          class="cat-chip active"
+          data-category="all"
+          onclick="filterCategory('all', this)"
+        >
           الكل
         </div>
-        <div class="cat-chip" onclick="filterCategory('بروستد', this)">
+        <div
+          class="cat-chip"
+          data-category="بروستد"
+          onclick="filterCategory('بروستد', this)"
+        >
           بروستد
         </div>
-        <div class="cat-chip" onclick="filterCategory('وجبات دجاج', this)">
+        <div
+          class="cat-chip"
+          data-category="وجبات دجاج"
+          onclick="filterCategory('وجبات دجاج', this)"
+        >
           وجبات دجاج
         </div>
-        <div class="cat-chip" onclick="filterCategory('مأكولات بحرية', this)">
+        <div
+          class="cat-chip"
+          data-category="مأكولات بحرية"
+          onclick="filterCategory('مأكولات بحرية', this)"
+        >
           مأكولات بحرية
         </div>
-        <div class="cat-chip" onclick="filterCategory('مقبلات وإضافات', this)">
+        <div
+          class="cat-chip"
+          data-category="مقبلات وإضافات"
+          onclick="filterCategory('مقبلات وإضافات', this)"
+        >
           مقبلات وإضافات
         </div>
       </div>
@@ -868,7 +1006,8 @@
           <div class="modal-header-row">
             <h2 class="modal-title" id="modal-title"></h2>
             <button class="share-btn" onclick="shareCurrentProduct()">
-              <i class="fa-solid fa-share-nodes"></i> مشاركة
+              <i class="fa-solid fa-share-nodes"></i>
+              <span id="share-btn-text">مشاركة</span>
             </button>
           </div>
           <div class="modal-price" id="modal-price"></div>
@@ -879,8 +1018,8 @@
             target="_blank"
             class="whatsapp-btn"
           >
-            <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem"></i> اطلب
-            الآن عبر الواتساب
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem"></i>
+            <span id="whatsapp-btn-text">اطلب الآن عبر الواتساب</span>
           </a>
         </div>
       </div>
@@ -905,13 +1044,20 @@
         <form id="product-form" onsubmit="handleFormSubmit(event)">
           <input type="hidden" id="editing-product-id" value="" />
           <div class="form-group">
-            <label>اسم الوجبة:</label>
-            <input
-              type="text"
-              id="p-name"
-              required
-              placeholder="مثال: بروستد عادي / ستيليس"
-            />
+            <label>اسم الوجبة / Meal Name:</label>
+            <div class="bilingual-input">
+              <input
+                type="text"
+                id="p-name-ar"
+                required
+                placeholder="العربي: بروستد عادي"
+              />
+              <input
+                type="text"
+                id="p-name-en"
+                placeholder="English: Regular Broasted"
+              />
+            </div>
           </div>
           <div class="form-group">
             <label>القسم:</label>
@@ -927,12 +1073,19 @@
             <input type="number" id="p-price" required placeholder="20" />
           </div>
           <div class="form-group">
-            <label>مكونات أو وصف الوجبة:</label>
-            <textarea
-              id="p-desc"
-              rows="2"
-              placeholder="مكونات الوجبة، الإضافات..."
-            ></textarea>
+            <label>وصف الوجبة / Meal Description:</label>
+            <div class="bilingual-input">
+              <textarea
+                id="p-desc-ar"
+                rows="2"
+                placeholder="العربي: مكونات الوجبة، الإضافات..."
+              ></textarea>
+              <textarea
+                id="p-desc-en"
+                rows="2"
+                placeholder="English: Ingredients and extras..."
+              ></textarea>
+            </div>
           </div>
           <div class="form-group">
             <label>شارات الوجبة:</label>
@@ -992,13 +1145,22 @@
       <!-- <div class="footer-brand">بروستد أمين | للإستفسار والطلب: 0510014106</div> -->
 
       <div class="footer-socials">
-        <a href="https://snapchat.com" target="_blank" title="سناب شات"
+        <a
+          href="https://www.snapchat.com/@bro_ameen"
+          target="_blank"
+          title="سناب شات"
           ><i class="fa-brands fa-snapchat"></i
         ></a>
-        <a href="https://instagram.com" target="_blank" title="انستغرام"
+        <a
+          href="https://www.instagram.com/bro_ameen1"
+          target="_blank"
+          title="انستغرام"
           ><i class="fa-brands fa-instagram"></i
         ></a>
-        <a href="https://tiktok.com" target="_blank" title="تيك توك"
+        <a
+          href="https://www.tiktok.com/@bro_ameen"
+          target="_blank"
+          title="تيك توك"
           ><i class="fa-brands fa-tiktok"></i
         ></a>
       </div>
@@ -1051,6 +1213,155 @@
       let activeSelectedProduct = null;
       let currentActiveCategory = "all";
 
+      // اللغة الحالية: ar = عربي / en = English
+      let currentLanguage = localStorage.getItem("menuLanguage") || "ar";
+
+      const translations = {
+        ar: {
+          languageButton: "English",
+          brandTitle: "بروستد أمين",
+          brandSubtitle: "أهلاً بكم - الطعم الذهبي المقرمش 🍗",
+          all: "الكل",
+          broasted: "بروستد",
+          chickenMeals: "وجبات دجاج",
+          seafood: "مأكولات بحرية",
+          appetizers: "مقبلات وإضافات",
+          noMeals: "لا توجد وجبات مضافة في هذا القسم حالياً.",
+          share: "مشاركة",
+          orderWhatsapp: "اطلب الآن عبر الواتساب",
+          orderMessage: "مرحباً بروستد أمين، أرغب في طلب هذه الوجبة:",
+          meal: "الوجبة",
+          price: "السعر",
+          link: "الرابط",
+          currency: "ريال سعودي",
+          currencyShort: "ر.س",
+          defaultDescription: "وجبة شهية ومميزة من بروستد أمين.",
+          copied: "📋 تم نسخ رابط الوجبة بنجاح!",
+          copyPrompt: "انسخ الرابط:",
+          processingImages: "جاري معالجة الصور...",
+          imageProcessing: "ضغط الصورة",
+          saving: "جاري حفظ البيانات...",
+          saveSuccess: "تم تحديث الوجبة بنجاح!",
+          addSuccess: "تم إضافة الوجبة للمنيو بنجاح!",
+          noImage: "أرفق صورة واحدة على الأقل للوجبة!",
+          fetchError: "خطأ في جلب بيانات المنيو",
+          loginSuccess: "تم الدخول بنجاح!",
+          loginError: "خطأ في بيانات الدخول",
+          logout: "تم تسجيل الخروج",
+          deleteConfirm: "هل أنت متأكد من حذف هذه الوجبة؟",
+          deleted: "تم الحذف بنجاح!"
+        },
+        en: {
+          languageButton: "العربية",
+          brandTitle: "Broasted Ameen",
+          brandSubtitle: "Welcome - Golden Crispy Taste 🍗",
+          all: "All",
+          broasted: "Broasted",
+          chickenMeals: "Chicken Meals",
+          seafood: "Seafood",
+          appetizers: "Appetizers & Extras",
+          noMeals: "No meals have been added to this section yet.",
+          share: "Share",
+          orderWhatsapp: "Order Now via WhatsApp",
+          orderMessage:
+            "Hello Broasted Ameen, I would like to order this meal:",
+          meal: "Meal",
+          price: "Price",
+          link: "Link",
+          currency: "SAR",
+          currencyShort: "SAR",
+          defaultDescription:
+            "A delicious and special meal from Broasted Ameen.",
+          copied: "📋 Meal link copied successfully!",
+          copyPrompt: "Copy the link:",
+          processingImages: "Processing images...",
+          imageProcessing: "Compressing image",
+          saving: "Saving data...",
+          saveSuccess: "Meal updated successfully!",
+          addSuccess: "Meal added to the menu successfully!",
+          noImage: "Please attach at least one image for the meal!",
+          fetchError: "Error loading menu data",
+          loginSuccess: "Login successful!",
+          loginError: "Invalid login details",
+          logout: "Logged out",
+          deleteConfirm: "Are you sure you want to delete this meal?",
+          deleted: "Deleted successfully!"
+        }
+      };
+
+      function t(key) {
+        return (
+          translations[currentLanguage][key] || translations.ar[key] || key
+        );
+      }
+
+      function getProductName(product) {
+        if (currentLanguage === "en") {
+          return product.nameEn || product.name || product.nameAr || "";
+        }
+        return product.nameAr || product.name || product.nameEn || "";
+      }
+
+      function getProductDescription(product) {
+        if (currentLanguage === "en") {
+          return (
+            product.descriptionEn ||
+            product.description ||
+            product.descriptionAr ||
+            t("defaultDescription")
+          );
+        }
+        return (
+          product.descriptionAr ||
+          product.description ||
+          product.descriptionEn ||
+          t("defaultDescription")
+        );
+      }
+
+      function getCategoryName(category) {
+        const map = {
+          all: "all",
+          بروستد: "broasted",
+          "وجبات دجاج": "chickenMeals",
+          "مأكولات بحرية": "seafood",
+          "مقبلات وإضافات": "appetizers"
+        };
+        return t(map[category] || category);
+      }
+
+      function applyLanguage() {
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+
+        document.getElementById("language-label").innerText =
+          t("languageButton");
+        document.getElementById("brand-title").innerText = t("brandTitle");
+        document.getElementById("brand-subtitle").innerText =
+          t("brandSubtitle");
+        document.getElementById("share-btn-text").innerText = t("share");
+        document.getElementById("whatsapp-btn-text").innerText =
+          t("orderWhatsapp");
+
+        document.querySelectorAll(".cat-chip").forEach((chip) => {
+          chip.innerText = getCategoryName(chip.dataset.category);
+        });
+
+        if (globalProducts.length) {
+          filterCategory(currentActiveCategory, null, false);
+        }
+
+        if (activeSelectedProduct) {
+          renderActiveProductModal();
+        }
+      }
+
+      window.toggleLanguage = function () {
+        currentLanguage = currentLanguage === "ar" ? "en" : "ar";
+        localStorage.setItem("menuLanguage", currentLanguage);
+        applyLanguage();
+      };
+
       function showToast(message, isError = false) {
         const toast = document.getElementById("toast-notification");
         document.getElementById("toast-text").innerText = message;
@@ -1060,19 +1371,70 @@
         }, 2500);
       }
 
-      async function fetchProducts() {
-        try {
-          const querySnapshot = await getDocs(collection(db, "products"));
-          globalProducts = [];
-          querySnapshot.forEach((docSnap) => {
-            globalProducts.push({ id: docSnap.id, ...docSnap.data() });
+      // جلب المنتجات بسرعة مع Cache محلي: عرض المنتجات المحفوظة فوراً، ثم تحديثها من Firebase في الخلفية
+      let productsCacheKey = "productsCache_v2";
+      let productsLoadedFromCache = false;
+
+      function normalizeProducts(snapshot) {
+        const products = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          products.push({
+            id: docSnap.id,
+            ...data,
+            nameAr: data.nameAr || data.name || "",
+            nameEn: data.nameEn || "",
+            descriptionAr: data.descriptionAr || data.description || "",
+            descriptionEn: data.descriptionEn || ""
           });
+        });
+        return products;
+      }
+
+      function saveProductsCache(products) {
+        try {
+          // نخزن نسخة خفيفة بدون الصور الكبيرة لتسريع فتح الصفحة
+          const lightweight = products.map((p) => ({
+            ...p,
+            images: undefined
+          }));
+          localStorage.setItem(productsCacheKey, JSON.stringify(lightweight));
+        } catch (e) {
+          console.warn("تعذر حفظ Cache المنتجات:", e);
+        }
+      }
+
+      function loadProductsCache() {
+        try {
+          const raw = localStorage.getItem(productsCacheKey);
+          if (!raw) return false;
+          const cached = JSON.parse(raw);
+          if (!Array.isArray(cached) || !cached.length) return false;
+          globalProducts = cached;
+          productsLoadedFromCache = true;
+          filterCategory(currentActiveCategory, null, false);
+          renderAdminList(globalProducts);
+          return true;
+        } catch (e) {
+          console.warn("تعذر قراءة Cache المنتجات:", e);
+          return false;
+        }
+      }
+
+      async function fetchProducts(options = {}) {
+        const background = options.background === true;
+        try {
+          // لا ننتظر Firebase قبل عرض الواجهة
+          const querySnapshot = await getDocs(collection(db, "products"));
+          globalProducts = normalizeProducts(querySnapshot);
+          saveProductsCache(globalProducts);
           filterCategory(currentActiveCategory, null, false);
           renderAdminList(globalProducts);
           checkUrlHashForProduct();
         } catch (error) {
-          console.error(error);
-          showToast("خطأ في جلب بيانات المنيو", true);
+          console.error("خطأ في جلب المنتجات:", error);
+          if (!background && !productsLoadedFromCache)
+            showToast(t("fetchError"), true);
         }
       }
 
@@ -1096,7 +1458,7 @@
         const gridContainer = document.getElementById("products-grid");
         gridContainer.innerHTML = "";
         if (products.length === 0) {
-          gridContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; font-size:0.88rem; padding: 2rem;">لا توجد وجبات مضافة في هذا القسم حالياً.</p>`;
+          gridContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; font-size:0.88rem; padding: 2rem;">${t("noMeals")}</p>`;
           return;
         }
 
@@ -1107,27 +1469,26 @@
 
           let firstImg = product.images?.[0] || "";
           let imgCount = product.images?.length || 0;
+          const displayName = getProductName(product);
 
           let badgesHtml = '<div class="product-badges">';
           if (product.hasDiscount)
-            badgesHtml +=
-              '<span class="badge badge-sale"><i class="fa-solid fa-tags"></i> عرض خاص</span>';
+            badgesHtml += `<span class="badge badge-sale"><i class="fa-solid fa-tags"></i> ${currentLanguage === "ar" ? "عرض خاص" : "Special Offer"}</span>`;
           if (product.isFeatured)
-            badgesHtml +=
-              '<span class="badge badge-featured"><i class="fa-solid fa-star"></i> مميز</span>';
+            badgesHtml += `<span class="badge badge-featured"><i class="fa-solid fa-star"></i> ${currentLanguage === "ar" ? "مميز" : "Featured"}</span>`;
           badgesHtml += "</div>";
 
           card.innerHTML = `
             <div class="card-img-container">
               ${badgesHtml}
-              <img src="${firstImg}" alt="${product.name}" loading="lazy">
+              <img src="${firstImg}" alt="${displayName}" loading="lazy">
               ${imgCount > 1 ? `<span class="img-badge"><i class="fa-regular fa-images"></i> ${imgCount}</span>` : ""}
             </div>
             <div class="card-content">
-              <h3 class="product-title">${product.name}</h3>
-              <div class="product-price">${product.price} ر.س</div>
+              <h3 class="product-title">${displayName}</h3>
+              <div class="product-price">${product.price} ${t("currencyShort")}</div>
               <div class="whatsapp-btn" style="pointer-events: none;">
-                <i class="fa-brands fa-whatsapp"></i> اطلب الآن
+                <i class="fa-brands fa-whatsapp"></i> ${currentLanguage === "ar" ? "اطلب الآن" : "Order Now"}
               </div>
             </div>
           `;
@@ -1138,6 +1499,29 @@
       let currentModalImages = [];
       let currentModalIndex = 0;
 
+      function renderActiveProductModal() {
+        if (!activeSelectedProduct) return;
+
+        const product = activeSelectedProduct;
+        const productName = getProductName(product);
+        const productDescription = getProductDescription(product);
+
+        document.getElementById("modal-title").innerText = productName;
+        document.getElementById("modal-price").innerText =
+          `${product.price} ${t("currency")}`;
+        document.getElementById("modal-desc").innerText = productDescription;
+
+        const baseUrl = window.location.href.split("#")[0].split("?")[0];
+        const productUrl = `${baseUrl}#meal-${product.id}`;
+
+        const message = `${t("orderMessage")}\n\n*${t("meal")}:* ${productName}\n*${t("price")}:* ${product.price} ${t("currency")}\n*${t("link")}:* ${productUrl}`;
+
+        document.getElementById("modal-whatsapp-btn").href =
+          `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+
+        updateModalSlider();
+      }
+
       window.openProductModal = function (productId) {
         const product = globalProducts.find((p) => p.id === productId);
         if (!product) return;
@@ -1146,20 +1530,7 @@
         currentModalImages = product.images || [];
         currentModalIndex = 0;
 
-        const baseUrl = window.location.href.split("#")[0].split("?")[0];
-        const productUrl = `${baseUrl}#meal-${product.id}`;
-
-        document.getElementById("modal-title").innerText = product.name;
-        document.getElementById("modal-price").innerText =
-          `${product.price} ريال سعودي`;
-        document.getElementById("modal-desc").innerText =
-          product.description || "وجبة شهية ومميزة من بروستد أمين.";
-
-        const message = `مرحباً بروستد أمين، أرغب في طلب هذه الوجبة:\n\n*الوجبة:* ${product.name}\n*السعر:* ${product.price} ريال\n*الرابط:* ${productUrl}`;
-        document.getElementById("modal-whatsapp-btn").href =
-          `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
-
-        updateModalSlider();
+        renderActiveProductModal();
         document.getElementById("product-modal").style.display = "flex";
       };
 
@@ -1191,7 +1562,7 @@
             showToast("📋 تم نسخ رابط الوجبة بنجاح!");
           })
           .catch(() => {
-            prompt("انسخ الرابط:", url);
+            prompt(t("copyPrompt"), url);
           });
       }
 
@@ -1340,61 +1711,109 @@
 
       window.handleFormSubmit = async function (e) {
         e.preventDefault();
-        const editingId = document.getElementById("editing-product-id").value;
-        const name = document.getElementById("p-name").value;
-        const category = document.getElementById("p-category").value;
-        const price = Number(document.getElementById("p-price").value);
-        const description = document.getElementById("p-desc").value;
-        const isFeatured = document.getElementById("p-featured").checked;
-        const hasDiscount = document.getElementById("p-discount").checked;
-        const imageFiles = document.getElementById("p-images").files;
 
+        const editingId = (
+          document.getElementById("editing-product-id")?.value || ""
+        ).trim();
+        const nameAr = (
+          document.getElementById("p-name-ar")?.value || ""
+        ).trim();
+        const nameEn = (
+          document.getElementById("p-name-en")?.value || ""
+        ).trim();
+        const category =
+          document.getElementById("p-category")?.value || "بروستد";
+        const priceValue = document.getElementById("p-price")?.value || "";
+        const price = Number(priceValue);
+        const descriptionAr = (
+          document.getElementById("p-desc-ar")?.value || ""
+        ).trim();
+        const descriptionEn = (
+          document.getElementById("p-desc-en")?.value || ""
+        ).trim();
+        const isFeatured = !!document.getElementById("p-featured")?.checked;
+        const hasDiscount = !!document.getElementById("p-discount")?.checked;
+        const imageInput = document.getElementById("p-images");
+        const imageFiles = imageInput ? imageInput.files : [];
+        const submitBtn = document.getElementById("admin-submit-btn");
         const loadingOverlay = document.getElementById("loading-overlay");
         const loadingText = document.getElementById("loading-text");
 
         try {
+          // التحقق من البيانات قبل الاتصال بـ Firebase
+          if (!nameAr && !nameEn) {
+            showToast("يرجى إدخال اسم المنتج", true);
+            return;
+          }
+          if (!Number.isFinite(price) || price < 0) {
+            showToast("يرجى إدخال سعر صحيح", true);
+            return;
+          }
+
+          if (submitBtn) submitBtn.disabled = true;
+          if (loadingOverlay) loadingOverlay.style.display = "flex";
+
+          // معالجة الصور الجديدة فقط. صور المنتج الحالي تبقى محفوظة عند التعديل.
           if (imageFiles.length > 0) {
-            loadingOverlay.style.display = "flex";
             for (let i = 0; i < imageFiles.length; i++) {
-              loadingText.innerText = `ضغط الصورة ${i + 1}/${imageFiles.length}...`;
+              if (loadingText) {
+                loadingText.innerText = `${t("imageProcessing")} ${i + 1}/${imageFiles.length}...`;
+              }
               const compressed = await compressImage(imageFiles[i]);
               workingImagesArray.push(compressed);
             }
           }
-          if (workingImagesArray.length === 0) {
-            loadingOverlay.style.display = "none";
-            showToast("أرفق صورة واحدة على الأقل للوجبة!", true);
+
+          if (!workingImagesArray.length) {
+            if (loadingOverlay) loadingOverlay.style.display = "none";
+            showToast(t("noImage"), true);
             return;
           }
 
-          loadingText.innerText = "جاري حفظ البيانات...";
-          loadingOverlay.style.display = "flex";
+          if (loadingText) loadingText.innerText = "جاري حفظ المنتج...";
+
+          // نسخة مستقلة حتى لا تتغير البيانات أثناء عملية الحفظ
+          const imagesToSave = [...workingImagesArray];
 
           const productData = {
-            name,
-            category,
-            price,
-            description,
-            isFeatured,
-            hasDiscount,
-            images: workingImagesArray
+            nameAr: nameAr,
+            nameEn: nameEn,
+            descriptionAr: descriptionAr,
+            descriptionEn: descriptionEn,
+
+            // توافق مع الكود والمنتجات القديمة
+            name: nameAr || nameEn,
+            description: descriptionAr || descriptionEn,
+
+            category: category,
+            price: price,
+            isFeatured: isFeatured,
+            hasDiscount: hasDiscount,
+            images: imagesToSave
           };
 
           if (editingId) {
+            // تعديل المنتج الموجود
             await updateDoc(doc(db, "products", editingId), productData);
-            showToast("تم تحديث الوجبة بنجاح!");
+            showToast(t("saveSuccess"));
           } else {
+            // إضافة منتج جديد
             productData.createdAt = Date.now();
             await addDoc(collection(db, "products"), productData);
-            showToast("تم إضافة الوجبة للمنيو بنجاح!");
+            showToast(t("addSuccess"));
           }
 
-          loadingOverlay.style.display = "none";
+          if (loadingOverlay) loadingOverlay.style.display = "none";
           resetProductForm();
-          fetchProducts();
+
+          // تحديث القائمة بدون تعطيل عملية الحفظ
+          await fetchProducts();
         } catch (err) {
-          loadingOverlay.style.display = "none";
-          showToast("خطأ: " + err.message, true);
+          console.error("Product save error:", err);
+          if (loadingOverlay) loadingOverlay.style.display = "none";
+          showToast("تعذر حفظ المنتج: " + (err?.message || err), true);
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
         }
       };
 
@@ -1402,11 +1821,16 @@
         const product = globalProducts.find((p) => p.id === id);
         if (!product) return;
         document.getElementById("editing-product-id").value = product.id;
-        document.getElementById("p-name").value = product.name;
+        document.getElementById("p-name-ar").value =
+          product.nameAr || product.name || "";
+        document.getElementById("p-name-en").value = product.nameEn || "";
         document.getElementById("p-category").value =
           product.category || "بروستد";
         document.getElementById("p-price").value = product.price;
-        document.getElementById("p-desc").value = product.description || "";
+        document.getElementById("p-desc-ar").value =
+          product.descriptionAr || product.description || "";
+        document.getElementById("p-desc-en").value =
+          product.descriptionEn || "";
         document.getElementById("p-featured").checked =
           product.isFeatured || false;
         document.getElementById("p-discount").checked =
@@ -1436,7 +1860,7 @@
           const item = document.createElement("div");
           item.className = "admin-item";
           item.innerHTML = `
-            <div class="admin-item-info"><b>${product.name}</b> (${product.price} ر.س)</div>
+            <div class="admin-item-info"><b>${getProductName(product)}</b> (${product.price} ${t("currencyShort")})</div>
             <div class="admin-actions">
               <button class="edit-btn" onclick="prepareEditProduct('${product.id}')">تعديل</button>
               <button class="delete-btn" onclick="deleteProduct('${product.id}')">حذف</button>
@@ -1447,9 +1871,9 @@
       }
 
       window.deleteProduct = async function (id) {
-        if (confirm("هل أنت متأكد من حذف هذه الوجبة؟")) {
+        if (confirm(t("deleteConfirm"))) {
           await deleteDoc(doc(db, "products", id));
-          showToast("تم الحذف بنجاح!");
+          showToast(t("deleted"));
           fetchProducts();
         }
       };
@@ -1470,17 +1894,17 @@
           closeLoginModal();
           document.getElementById("login-form").reset();
           document.getElementById("admin-modal").style.display = "flex";
-          showToast("تم الدخول بنجاح!");
+          showToast(t("loginSuccess"));
           fetchProducts();
         } catch (err) {
-          showToast("خطأ في بيانات الدخول", true);
+          showToast(t("loginError"), true);
         }
       };
 
       window.logoutAdmin = async () => {
         await signOut(auth);
         closeAdminPanel();
-        showToast("تم تسجيل الخروج");
+        showToast(t("logout"));
       };
 
       window.closeAdminPanel = () => {
@@ -1489,7 +1913,13 @@
         fetchProducts();
       };
 
-      document.addEventListener("DOMContentLoaded", fetchProducts);
+      document.addEventListener("DOMContentLoaded", () => {
+        applyLanguage();
+        // عرض الكاش فوراً حتى لا تبقى الصفحة فارغة أثناء اتصال Firebase
+        loadProductsCache();
+        // تحديث البيانات الحقيقية في الخلفية
+        fetchProducts({ background: true });
+      });
     </script>
   </body>
 </html>
